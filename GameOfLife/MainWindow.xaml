@@ -12,6 +12,9 @@
                 <TextBox x:Name="CountBox" HorizontalAlignment="Left" Margin="10,10,10,10" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
                 <Button x:Name="StartButton" Content="Start" Margin="10,10,10,10" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="StartButton_Click"/>
                 <Button x:Name="StepButton" Content="Step" Margin="10,10,10,10" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="StepButton_Click" />
+                <Button x:Name="ResetButton" Content="Reset" Width="75" Margin="10,10,10,10" Click="ResetButton_Click"/>
+                <Label Content="Iterations:" Margin="10,10,2,10"/>
+                <Label x:Name="IterationsLabel" Content="{Binding StepCounter}" Margin="2,10,10,10"/>
             </StackPanel>
             <Grid DockPanel.Dock="Bottom" x:Name="MainGrid" Margin="10,10,10,10" />
         </DockPanel>

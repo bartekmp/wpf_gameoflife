@@ -29,18 +29,19 @@ namespace GameOfLife
         {
             InitializeComponent();
             _gameOfLife.PopulateGrid(MainGrid);
+            DataContext = _gameOfLife;
         }
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
-            int iterations;
             if (CountBox.Text == string.Empty)
             {
                 GameStarted = true;
-                _gameOfLife.Step();
+                _gameOfLife.RunSimulation(1);
             }
             else
             {
+                int iterations;
                 var successfulParsing = int.TryParse(CountBox.Text, out iterations);
                 if (!successfulParsing)
                 {
@@ -55,7 +56,12 @@ namespace GameOfLife
         private void StepButton_Click(object sender, RoutedEventArgs e)
         {
             if(GameStarted)
-                _gameOfLife.Step();
+                _gameOfLife.Step(this, null);
+        }
+
+        private void ResetButton_Click(object sender, RoutedEventArgs e)
+        {
+            _gameOfLife.ResetGame();
         }
     }
 
@@ -63,7 +69,7 @@ namespace GameOfLife
     {
         public static void Refresh(this UIElement uiElement)
         {
-            uiElement.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() => { }));
+            //uiElement.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() => { }));
         }
     }
 }
