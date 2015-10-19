@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -14,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using GameOfLife.Annotations;
 
 namespace GameOfLife
 {
@@ -23,20 +25,51 @@ namespace GameOfLife
     public partial class MainWindow : Window
     {
         
-        Game _gameOfLife = new Game();
-        public bool GameStarted;
+        Game _gameOfLife;
+        private const int CellsWidth = 40, CellsHeight = 20;
+        
         public MainWindow()
         {
             InitializeComponent();
-            _gameOfLife.PopulateGrid(MainGrid);
+
+            _gameOfLife = new Game(50, 30);
             DataContext = _gameOfLife;
         }
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
+            int width, height;
+            width = int.TryParse(WidthBox.Text, out width) ? ((width >= 10 && width <= 100) ? width : CellsWidth) : CellsWidth;
+            height = int.TryParse(HeightBox.Text, out height) ? ((height >= 10 && height <= 100) ? height : CellsHeight) : CellsHeight;
+
+            _gameOfLife.ResizeGrid(width, height);
+            _gameOfLife.PopulateGrid(MainGrid);
+
+            _gameOfLife.GameStarted = true;
+            _gameOfLife.GameNotStarted = false;
+
+
+        }
+
+        private void StepButton_Click(object sender, RoutedEventArgs e)
+        {
+            _gameOfLife.Step();
+        }
+
+        private void ResetButton_Click(object sender, RoutedEventArgs e)
+        {
+            _gameOfLife.ResetGame();
+        }
+
+        private void CloseWindow(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void RunButton_Click(object sender, RoutedEventArgs e)
+        {
             if (CountBox.Text == string.Empty)
             {
-                GameStarted = true;
                 _gameOfLife.RunSimulation(1);
             }
             else
@@ -48,20 +81,8 @@ namespace GameOfLife
                     MessageBox.Show("Bad value entered!");
                     return;
                 }
-                GameStarted = true;
                 _gameOfLife.RunSimulation(iterations);
             }
-        }
-
-        private void StepButton_Click(object sender, RoutedEventArgs e)
-        {
-            if(GameStarted)
-                _gameOfLife.Step(this, null);
-        }
-
-        private void ResetButton_Click(object sender, RoutedEventArgs e)
-        {
-            _gameOfLife.ResetGame();
         }
     }
 
@@ -69,7 +90,7 @@ namespace GameOfLife
     {
         public static void Refresh(this UIElement uiElement)
         {
-            //uiElement.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() => { }));
+            uiElement.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() => { }));
         }
     }
 }
