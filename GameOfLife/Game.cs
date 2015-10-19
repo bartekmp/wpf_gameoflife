@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Shell;
 using System.Windows.Threading;
 using GameOfLife.Annotations;
 
@@ -21,12 +22,33 @@ namespace GameOfLife
         private int _iterations;
         private int _stepCounter;
 
-        private const int GridWidth = 50;
-        private const int GridHeight = 30;
+        private bool _gameStarted, _gameNotStarted;
+        public bool GameStarted
+        {
+            get { return _gameStarted; }
+            set
+            {
+                _gameStarted = value;
+                _gameNotStarted = !_gameStarted;
+                OnPropertyChanged("GameStarted");
+            }
+        }
 
-        public Cell[,] Cells = new Cell[GridHeight, GridWidth];
+        public bool GameNotStarted
+        {
+            get { return _gameNotStarted; }
+            set
+            {
+                _gameNotStarted = value;
+                OnPropertyChanged("GameNotStarted");
+            }
+        }
+
+        private int GridWidth = 50;
+        private int GridHeight = 30;
+
+        public Cell[,] Cells;
         private Grid _grid;
-        private DispatcherTimer _dispatcherTimer = new DispatcherTimer();
 
         public int StepCounter
         {
@@ -45,10 +67,19 @@ namespace GameOfLife
             }
         }
 
-        public Game()
+        public Game(int width, int height)
         {
-            _dispatcherTimer.Tick += Step;
-            _dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 500);
+            GridHeight = height;
+            GridWidth = width;
+            _gameNotStarted = true;
+            Cells = new Cell[GridHeight, GridWidth];
+        }
+
+        public void ResizeGrid(int width, int height)
+        {
+            GridHeight = height;
+            GridWidth = width;
+            Cells = new Cell[GridHeight, GridWidth];
         }
 
         public void PopulateGrid(Grid mainGrid)
@@ -86,18 +117,15 @@ namespace GameOfLife
         public void RunSimulation(int iterations)
         {
             _iterations = iterations;
-            _dispatcherTimer.Start();
+            while (_iterations-- > 0)
+            {
+                Step();
+                _grid.Refresh();
+            }
         }
 
-        public void Step(object sender, EventArgs e)
+        public void Step()
         {
-            _iterations--;
-            if (_iterations <= 0)
-            {
-                _dispatcherTimer.Stop();
-                return;
-            }
-
             for (var i = 0; i < GridWidth; i++)
             {
                 for (var j = 0; j < GridHeight; j++)
@@ -125,9 +153,6 @@ namespace GameOfLife
         private int GetLivingNeighbors(int x, int y)
         {
             var count = 0;
-            // Cells[y, x]
-            // y - wiersz
-            // x - kolumna
             
             // cell on the right
             if (x < GridWidth - 1)
@@ -171,7 +196,7 @@ namespace GameOfLife
 
             return count;
         }
-        private void ClickCell(object sender, RoutedEventArgs e)
+        public void ClickCell(object sender, RoutedEventArgs e)
         {
             var element = (UIElement)e.Source;
 
@@ -183,7 +208,6 @@ namespace GameOfLife
 
         public void ResetGame()
         {
-            _dispatcherTimer.Stop();
             _iterations = 0;
             StepCounter = 0;
 
@@ -191,6 +215,7 @@ namespace GameOfLife
             {
                 for (var j = 0; j < GridHeight; j++)
                 {
+                    Cells[j, i].Used = false;
                     Cells[j, i].SetDead();
                 }
             }

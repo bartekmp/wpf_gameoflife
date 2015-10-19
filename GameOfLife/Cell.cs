@@ -16,6 +16,7 @@ namespace GameOfLife
         public Rectangle Rect;
         public Button Btn;
         public bool IsAlive { get; set; }
+        public bool Used { get; set; }
         public int X { get; set; }
         public int Y { get; set; }
 
@@ -24,6 +25,7 @@ namespace GameOfLife
             X = x;
             Y = y;
             IsAlive = false;
+            Used = false;
 
             Rect = new Rectangle
             {
@@ -40,25 +42,38 @@ namespace GameOfLife
         public void SetAlive()
         {
             IsAlive = true;
+            Used = true;
             Rect.Fill = Brushes.Black;
         }
 
         public void SetDead()
         {
             IsAlive = false;
-            Rect.Fill = Brushes.Transparent;
+            Rect.Fill = Used ? Brushes.CornflowerBlue : Brushes.Transparent;
         }
 
         public void ChangeState()
         {
-            IsAlive = !IsAlive;
-            Rect.Fill = IsAlive ? Brushes.Black : Brushes.Transparent;
+            if (IsAlive)
+            {
+                SetDead();
+            }
+            else
+            {
+                SetAlive();
+            }
         }
 
         public void SetState(bool state)
         {
-            IsAlive = state;
-            Rect.Fill = IsAlive ? Brushes.Black : Brushes.Transparent;
+            if (state)
+            {
+                SetAlive();
+            }
+            else
+            {
+                SetDead();
+            }
         }
 
    
