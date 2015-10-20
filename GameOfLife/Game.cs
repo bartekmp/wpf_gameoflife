@@ -23,6 +23,8 @@ namespace GameOfLife
         private int _stepCounter;
 
         private bool _gameStarted, _gameNotStarted;
+
+        public double Speed;
         public bool GameStarted
         {
             get { return _gameStarted; }
@@ -47,7 +49,7 @@ namespace GameOfLife
         private int GridWidth = 50;
         private int GridHeight = 30;
 
-        public Cell[,] Cells;
+        public CellControl[,] Cells;
         private Grid _grid;
 
         public int StepCounter
@@ -72,14 +74,14 @@ namespace GameOfLife
             GridHeight = height;
             GridWidth = width;
             _gameNotStarted = true;
-            Cells = new Cell[GridHeight, GridWidth];
+            Cells = new CellControl[GridHeight, GridWidth];
         }
 
         public void ResizeGrid(int width, int height)
         {
             GridHeight = height;
             GridWidth = width;
-            Cells = new Cell[GridHeight, GridWidth];
+            Cells = new CellControl[GridHeight, GridWidth];
         }
 
         public void PopulateGrid(Grid mainGrid)
@@ -97,18 +99,14 @@ namespace GameOfLife
             {
                 for (var j = 0; j < GridHeight; j++)
                 {
-                    var cell = new Cell(i, j);
-                    cell.Btn.Click += ClickCell;
+                    var cell = new CellControl();
                     Cells[j, i] = cell;
 
 
-                    Grid.SetColumn(cell.Rect, i);
-                    Grid.SetRow(cell.Rect, j);
-                    mainGrid.Children.Add(cell.Rect);
-
-                    Grid.SetColumn(cell.Btn, i);
-                    Grid.SetRow(cell.Btn, j);
-                    mainGrid.Children.Add(cell.Btn);
+                    Grid.SetColumn(cell, i);
+                    Grid.SetRow(cell, j);
+                    mainGrid.Children.Add(cell);
+                    
 
                 }
             }
@@ -121,6 +119,7 @@ namespace GameOfLife
             {
                 Step();
                 _grid.Refresh();
+                Thread.Sleep((int)Speed);
             }
         }
 

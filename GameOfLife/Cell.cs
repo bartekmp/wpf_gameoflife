@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -8,34 +10,35 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using GameOfLife.Annotations;
 
 namespace GameOfLife
 {
-    public class Cell
+    public class Cell : INotifyPropertyChanged
     {
-        public Rectangle Rect;
-        public Button Btn;
         public bool IsAlive { get; set; }
         public bool Used { get; set; }
         public int X { get; set; }
         public int Y { get; set; }
+        public Brush FillBrush
+        {
+            get { return _fillBrush; }
+            set
+            {
+                _fillBrush = value;
+                OnPropertyChanged("FillBrush");
+            }
+        }
 
-        public Cell(int x, int y)
+        private Brush _fillBrush;
+        public Cell(int x=0, int y=0)
         {
             X = x;
             Y = y;
             IsAlive = false;
             Used = false;
+            FillBrush = Brushes.Transparent;
 
-            Rect = new Rectangle
-            {
-                Fill = Brushes.Transparent,
-                Stroke = Brushes.Black,
-            };
-            Btn = new Button
-            {
-                Background = Brushes.Transparent
-            };
 
         }
 
@@ -43,13 +46,13 @@ namespace GameOfLife
         {
             IsAlive = true;
             Used = true;
-            Rect.Fill = Brushes.Black;
+            FillBrush = Brushes.Black;
         }
 
         public void SetDead()
         {
             IsAlive = false;
-            Rect.Fill = Used ? Brushes.CornflowerBlue : Brushes.Transparent;
+            FillBrush = Used ? Brushes.CornflowerBlue : Brushes.Transparent;
         }
 
         public void ChangeState()
@@ -76,7 +79,13 @@ namespace GameOfLife
             }
         }
 
-   
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

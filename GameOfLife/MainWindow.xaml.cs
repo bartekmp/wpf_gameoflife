@@ -27,7 +27,7 @@ namespace GameOfLife
         
         Game _gameOfLife;
         private const int CellsWidth = 40, CellsHeight = 20;
-        
+        private double? Speed = null;
         public MainWindow()
         {
             InitializeComponent();
@@ -42,6 +42,7 @@ namespace GameOfLife
             width = int.TryParse(WidthBox.Text, out width) ? ((width >= 10 && width <= 100) ? width : CellsWidth) : CellsWidth;
             height = int.TryParse(HeightBox.Text, out height) ? ((height >= 10 && height <= 100) ? height : CellsHeight) : CellsHeight;
 
+            _gameOfLife.Speed = Speed ?? 300;
             _gameOfLife.ResizeGrid(width, height);
             _gameOfLife.PopulateGrid(MainGrid);
 
@@ -64,6 +65,16 @@ namespace GameOfLife
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void OpenSpeedDialog(object sender, RoutedEventArgs e)
+        {
+            var w = new SpeedWindow();
+            if (w.ShowDialog() == true)
+            {
+                Speed = w.SliderValue;
+            }
+        
         }
 
         private void RunButton_Click(object sender, RoutedEventArgs e)
