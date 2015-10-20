@@ -11,11 +11,11 @@
             <Menu x:Name="menu" Height="32">
                 <MenuItem Header="_File">
                     <MenuItem Header="_Start"  Click="StartButton_Click"/>
+                    <MenuItem Header="_Speed"  Click="OpenSpeedDialog"/>
                     <MenuItem Header="_Run"  Click="RunButton_Click"/>
                     <MenuItem Header="_Step"  Click="StepButton_Click"/>
                     <MenuItem Header="_Reset"  Click="ResetButton_Click"/>
-                    <MenuItem Header="_Close"  Click="StartButton_Click"/>
-                    
+                    <MenuItem Header="_Close"  Click="CloseWindow"/>
                 </MenuItem>
             </Menu>
             <DockPanel Margin="0,0,0,0">
