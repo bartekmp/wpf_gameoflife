@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -22,17 +23,18 @@ namespace GameOfLife
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         
         Game _gameOfLife;
         private const int CellsWidth = 40, CellsHeight = 20;
-        private double? Speed = null;
+        private double? _speed;
+
         public MainWindow()
         {
             InitializeComponent();
 
-            _gameOfLife = new Game(50, 30);
+            _gameOfLife = new Game(50, 30) {CellGrid = MainGrid};
             DataContext = _gameOfLife;
         }
 
@@ -42,13 +44,12 @@ namespace GameOfLife
             width = int.TryParse(WidthBox.Text, out width) ? ((width >= 10 && width <= 100) ? width : CellsWidth) : CellsWidth;
             height = int.TryParse(HeightBox.Text, out height) ? ((height >= 10 && height <= 100) ? height : CellsHeight) : CellsHeight;
 
-            _gameOfLife.Speed = Speed ?? 300;
+            _gameOfLife.Speed = _speed ?? 300;
             _gameOfLife.ResizeGrid(width, height);
-            _gameOfLife.PopulateGrid(MainGrid);
+            _gameOfLife.PopulateGrid();
 
             _gameOfLife.GameStarted = true;
             _gameOfLife.GameNotStarted = false;
-
 
         }
 
@@ -62,6 +63,65 @@ namespace GameOfLife
             _gameOfLife.ResetGame();
         }
 
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            var state = _gameOfLife.SaveState();
+
+            string filename;
+            var dlg = new Microsoft.Win32.SaveFileDialog
+            {
+                DefaultExt = ".cell",
+                Filter = "Game of Life board (*.cell)|*.cell"
+            };
+            
+            var result = dlg.ShowDialog();
+
+            
+            if (result == true)
+            {
+                filename = dlg.FileName;
+            }
+            else
+            {
+                MessageBox.Show("Error while opening the file!");
+                return;
+            }
+            using (var fs = new StreamWriter(filename))
+            {
+                foreach (var line in state)
+                {
+                    fs.WriteLine(line);
+                }
+            }
+
+        }
+
+        private void OpenButton_Click(object sender, RoutedEventArgs e)
+        {
+            string filename;
+            var dlg = new Microsoft.Win32.OpenFileDialog
+            {
+                DefaultExt = ".cell",
+                Filter = "Game of Life board (*.cell)|*.cell"
+            };
+
+            var result = dlg.ShowDialog();
+
+
+            if (result == true)
+            {
+                filename = dlg.FileName;
+            }
+            else
+            {
+                MessageBox.Show("Error while opening the file!");
+                return;
+            }
+            var state = File.ReadAllLines(filename);
+            _gameOfLife.RestoreState(state);
+
+        }
+
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
             Close();
@@ -72,7 +132,7 @@ namespace GameOfLife
             var w = new SpeedWindow();
             if (w.ShowDialog() == true)
             {
-                Speed = w.SliderValue;
+                _speed = w.SliderValue;
             }
         
         }

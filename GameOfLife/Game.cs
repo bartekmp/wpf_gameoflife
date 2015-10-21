@@ -46,11 +46,11 @@ namespace GameOfLife
             }
         }
 
-        private int GridWidth = 50;
-        private int GridHeight = 30;
+        private int _gridWidth = 50;
+        private int _gridHeight = 30;
 
         public CellControl[,] Cells;
-        private Grid _grid;
+        public Grid CellGrid;
 
         public int StepCounter
         {
@@ -71,43 +71,40 @@ namespace GameOfLife
 
         public Game(int width, int height)
         {
-            GridHeight = height;
-            GridWidth = width;
+            _gridHeight = height;
+            _gridWidth = width;
             _gameNotStarted = true;
-            Cells = new CellControl[GridHeight, GridWidth];
+            Cells = new CellControl[_gridHeight, _gridWidth];
         }
 
         public void ResizeGrid(int width, int height)
         {
-            GridHeight = height;
-            GridWidth = width;
-            Cells = new CellControl[GridHeight, GridWidth];
+            _gridHeight = height;
+            _gridWidth = width;
+            Cells = new CellControl[_gridHeight, _gridWidth];
         }
 
-        public void PopulateGrid(Grid mainGrid)
+        public void PopulateGrid()
         {
-            _grid = mainGrid;
-            for (var i = 0; i < GridWidth; i++)
+            for (var i = 0; i < _gridWidth; i++)
             {
-                mainGrid.ColumnDefinitions.Add(new ColumnDefinition());
+                CellGrid.ColumnDefinitions.Add(new ColumnDefinition());
             }
-            for (var i = 0; i < GridHeight; i++)
+            for (var i = 0; i < _gridHeight; i++)
             {
-                mainGrid.RowDefinitions.Add(new RowDefinition());
+                CellGrid.RowDefinitions.Add(new RowDefinition());
             }
-            for (var i = 0; i < GridWidth; i++)
+            for (var j = 0; j < _gridHeight; j++)
             {
-                for (var j = 0; j < GridHeight; j++)
+                for (var i = 0; i < _gridWidth; i++)
                 {
-                    var cell = new CellControl();
+                    CellControl cell;
+                    cell = new CellControl();
                     Cells[j, i] = cell;
-
-
                     Grid.SetColumn(cell, i);
                     Grid.SetRow(cell, j);
-                    mainGrid.Children.Add(cell);
+                    CellGrid.Children.Add(cell);
                     
-
                 }
             }
         }
@@ -118,16 +115,16 @@ namespace GameOfLife
             while (_iterations-- > 0)
             {
                 Step();
-                _grid.Refresh();
+                CellGrid.Refresh();
                 Thread.Sleep((int)Speed);
             }
         }
 
         public void Step()
         {
-            for (var i = 0; i < GridWidth; i++)
+            for (var j = 0; j < _gridHeight; j++)
             {
-                for (var j = 0; j < GridHeight; j++)
+                for (var i = 0; i < _gridWidth; i++)
                 {
                     var living = Cells[j, i].IsAlive;
                     var count = GetLivingNeighbors(i, j);
@@ -154,22 +151,22 @@ namespace GameOfLife
             var count = 0;
             
             // cell on the right
-            if (x < GridWidth - 1)
+            if (x < _gridWidth - 1)
                 if (Cells[y, x+1].IsAlive)
                     count++;
 
             // cell on the bottom right
-            if (x < GridWidth - 1 && y < GridHeight - 1)
+            if (x < _gridWidth - 1 && y < _gridHeight - 1)
                 if (Cells[y + 1, x + 1].IsAlive)
                     count++;
 
             // cell on the bottom
-            if (y < GridHeight - 1)
+            if (y < _gridHeight - 1)
                 if (Cells[y + 1, x].IsAlive)
                     count++;
 
             // cell on the bottom left
-            if (x > 0 && y < GridHeight - 1)
+            if (x > 0 && y < _gridHeight - 1)
                 if (Cells[y +1, x -1].IsAlive)
                     count++;
 
@@ -189,7 +186,7 @@ namespace GameOfLife
                     count++;
 
             // cell on the top right
-            if (x < GridWidth - 1 && y > 0)
+            if (x < _gridWidth - 1 && y > 0)
                 if (Cells[y - 1, x + 1].IsAlive)
                     count++;
 
@@ -210,14 +207,85 @@ namespace GameOfLife
             _iterations = 0;
             StepCounter = 0;
 
-            for (var i = 0; i < GridWidth; i++)
+            for (var j = 0; j < _gridHeight; j++)
             {
-                for (var j = 0; j < GridHeight; j++)
+                for (var i = 0; i < _gridWidth; i++)
                 {
                     Cells[j, i].Used = false;
                     Cells[j, i].SetDead();
                 }
             }
+        }
+
+        public string[] SaveState()
+        {
+            var state = new string[_gridHeight];
+            for (var i = 0; i < _gridHeight; i++)
+            {
+                var sb = new StringBuilder();
+                for (var j = 0; j < _gridWidth; j++)
+                {
+                    var cell = new char[1];
+                    if (Cells[i, j].IsAlive)
+                    {
+                        cell[0] = 'A';
+                    }
+                    else if (Cells[i, j].Used)
+                    {
+                        cell[0] = 'U';
+                    }
+                    else
+                    {
+                        cell[0] = 'D';
+                    }
+                    sb.Append(cell);
+                }
+                state[i] = sb.ToString();
+            }
+            return state;
+        }
+
+        public void RestoreState(string[] state)
+        {
+            if (GameStarted)
+            {
+                ResetGame();
+            }
+
+            var height = state.Length;
+            var length = state[0].Length;
+
+            if (_gridHeight != height || _gridWidth != length)
+            {
+                ResizeGrid(length, height);
+            }
+
+            if (GameNotStarted)
+            {
+                PopulateGrid();
+            }
+
+            for (var i = 0; i < height; i++)
+            {
+                for (var j = 0; j < length; j++)
+                {
+                    if (state[i][j] == 'A')
+                    {
+                        Cells[i, j].SetAlive();
+                    }
+                    else if (state[i][j] == 'U')
+                    {
+                        Cells[i, j].Used = true;
+                        Cells[i, j].SetDead();
+                    }
+                    else
+                    {
+                        Cells[i, j].SetDead();
+                    }
+                }
+            }
+            GameStarted = true;
+            GameNotStarted = false;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

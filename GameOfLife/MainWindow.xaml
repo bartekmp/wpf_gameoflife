@@ -15,6 +15,8 @@
                     <MenuItem Header="_Run"  Click="RunButton_Click"/>
                     <MenuItem Header="_Step"  Click="StepButton_Click"/>
                     <MenuItem Header="_Reset"  Click="ResetButton_Click"/>
+                    <MenuItem Header="_Save state" Click="SaveButton_Click" />
+                    <MenuItem Header="_Open state" Click="OpenButton_Click" />
                     <MenuItem Header="_Close"  Click="CloseWindow"/>
                 </MenuItem>
             </Menu>
