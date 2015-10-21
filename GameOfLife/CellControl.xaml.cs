@@ -42,7 +42,7 @@ namespace GameOfLife
         {
             get { return modelCell.Used; }
             set { modelCell.Used = value; }
-        }
+        } 
 
         public void ChangeState() { modelCell.ChangeState();}
 

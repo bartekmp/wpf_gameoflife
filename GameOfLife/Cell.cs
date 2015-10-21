@@ -76,7 +76,7 @@ namespace GameOfLife
             else
             {
                 SetDead();
-            }
+            } 
         }
 
 

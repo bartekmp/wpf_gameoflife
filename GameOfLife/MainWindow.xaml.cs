@@ -47,7 +47,7 @@ namespace GameOfLife
             _gameOfLife.Speed = _speed ?? 300;
             _gameOfLife.ResizeGrid(width, height);
             _gameOfLife.PopulateGrid();
-
+             
             _gameOfLife.GameStarted = true;
             _gameOfLife.GameNotStarted = false;
 

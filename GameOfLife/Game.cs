@@ -250,7 +250,7 @@ namespace GameOfLife
             if (GameStarted)
             {
                 ResetGame();
-            }
+            } 
 
             var height = state.Length;
             var length = state[0].Length;
