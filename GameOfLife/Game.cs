@@ -44,6 +44,8 @@ namespace GameOfLife
             }
         }
 
+        public bool Pause { get; set; }
+
         private int _gridWidth = 50;
         private int _gridHeight = 30;
 
@@ -108,7 +110,7 @@ namespace GameOfLife
         public void RunSimulation(int iterations)
         {
             _iterations = iterations;
-            while (_iterations-- > 0)
+            while (_iterations-- > 0 && !Pause)
             {
                 Step();
                 CellGrid.Refresh();

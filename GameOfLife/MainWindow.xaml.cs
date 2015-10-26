@@ -138,6 +138,7 @@ namespace GameOfLife
 
         private void RunButton_Click(object sender, RoutedEventArgs e)
         {
+            _gameOfLife.Pause = false;
             if (CountBox.Text == string.Empty)
             {
                 _gameOfLife.RunSimulation(1);
@@ -153,6 +154,11 @@ namespace GameOfLife
                 }
                 _gameOfLife.RunSimulation(iterations);
             }
+        }
+
+        private void PauseButton_Click(object sender, RoutedEventArgs e)
+        {
+            _gameOfLife.Pause = !_gameOfLife.Pause;
         }
 
         [NotifyPropertyChangedInvocator]
