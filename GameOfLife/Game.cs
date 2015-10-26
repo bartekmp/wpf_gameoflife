@@ -283,18 +283,19 @@ namespace GameOfLife
                     switch (state[i][j])
                     {
                         case 'A':
-                            Cells[i, j].SetCurrentAlive();
+                            Cells[i, j].SetAlive();
                             break;
                         case 'U':
                             Cells[i, j].Used = true;
-                            Cells[i, j].SetCurrentDead();
+                            Cells[i, j].SetDead();
                             break;
                         default:
-                            Cells[i, j].SetCurrentDead();
+                            Cells[i, j].SetDead();
                             break;
                     }
                 }
             }
+            UpdateCells();
             GameStarted = true;
             GameNotStarted = false;
         }
