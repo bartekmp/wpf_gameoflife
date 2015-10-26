@@ -1,17 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace GameOfLife
 {
@@ -20,35 +8,34 @@ namespace GameOfLife
     /// </summary>
     public partial class CellControl : UserControl
     {
-        readonly Cell modelCell = new Cell();
+        readonly Cell _modelCell = new Cell();
         public CellControl()
         {
             InitializeComponent();
-            DataContext = modelCell;
+            DataContext = _modelCell;
         }
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-            modelCell.ChangeState();
-           // Btn.Background = modelCell.FillBrush;
+            _modelCell.ChangeState();
         }
 
         public bool IsAlive
         {
-            get { return modelCell.IsAlive; }
-            set { modelCell.IsAlive = value; }
+            get { return _modelCell.IsAlive; }
+            set { _modelCell.IsAlive = value; }
         }
         public bool Used
         {
-            get { return modelCell.Used; }
-            set { modelCell.Used = value; }
+            get { return _modelCell.Used; }
+            set { _modelCell.Used = value; }
         } 
 
-        public void ChangeState() { modelCell.ChangeState();}
+        public void ChangeState() { _modelCell.ChangeState();}
 
-        public void SetState(bool state) { modelCell.SetState(state);}
+        public void SetState(bool state) { _modelCell.SetState(state);}
 
-        public void SetDead() { modelCell.SetDead(); }
-        public void SetAlive() { modelCell.SetAlive(); }
+        public void SetDead() { _modelCell.SetDead(); }
+        public void SetAlive() { _modelCell.SetAlive(); }
     }
 }

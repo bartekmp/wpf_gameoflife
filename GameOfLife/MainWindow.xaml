@@ -10,10 +10,9 @@
         <DockPanel>
             <Menu x:Name="menu" Height="32" DockPanel.Dock="Top">
                 <MenuItem Header="_File">
-                    <MenuItem Header="_Start"  Click="StartButton_Click"/>
                     <MenuItem Header="_Speed"  Click="OpenSpeedDialog"/>
-                    <MenuItem Header="_Run"  Click="RunButton_Click"/>
-                    <MenuItem Header="_Step"  Click="StepButton_Click"/>
+                    <MenuItem Header="_Run"  Click="RunButton_Click" IsEnabled="{Binding GameStarted}" />
+                    <MenuItem Header="_Step"  Click="StepButton_Click" IsEnabled="{Binding GameStarted}" />
                     <MenuItem Header="_Reset"  Click="ResetButton_Click"/>
                     <MenuItem Header="_Save state" Click="SaveButton_Click" />
                     <MenuItem Header="_Open state" Click="OpenButton_Click" />
@@ -24,16 +23,11 @@
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
                     <Label Content="Steps:" Margin="10,10,2,10" />
                     <TextBox x:Name="CountBox" HorizontalAlignment="Left" Margin="10,10,10,10" TextWrapping="Wrap" Text="" Width="54"/>
-                    <Button x:Name="StartButton" Content="Start" Margin="10,10,10,10" Width="60" Click="StartButton_Click" IsEnabled="{Binding GameNotStarted}"/>
                     <Button x:Name="RunButton" Content="Run" Margin="10,10,10,10" Width="60" Click="RunButton_Click" IsEnabled="{Binding GameStarted}"/>
                     <Button x:Name="StepButton" Content="Step" Margin="10,10,10,10" Width="60" Click="StepButton_Click" IsEnabled="{Binding GameStarted}" />
                     <Button x:Name="ResetButton" Content="Reset" Width="60" Margin="10,10,10,10" Click="ResetButton_Click"/>
                     <Label Content="Iterations:" Margin="10,10,2,10" />
                     <Label x:Name="IterationsLabel" Margin="2,10,10,10" Content="{Binding StepCounter}"/>
-                    <Label Content="Width:" Margin="2,10,2,10"/>
-                    <TextBox x:Name="WidthBox" Height="22" TextWrapping="Wrap" Text="40" Width="32" Margin="2,10,2,10"/>
-                    <Label Content="Height:" Margin="2,10,2,10"/>
-                    <TextBox x:Name="HeightBox" Height="22" TextWrapping="Wrap" Text="20" Width="32" Margin="2,10,2,10"/>
                 </StackPanel>
                 <Grid DockPanel.Dock="Bottom" x:Name="MainGrid" Margin="10,10,10,10" />
         </DockPanel>

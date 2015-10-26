@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Threading;
 using GameOfLife.Annotations;
+using Microsoft.Win32;
 
 namespace GameOfLife
 {
@@ -13,9 +14,7 @@ namespace GameOfLife
     /// </summary>
     public partial class MainWindow : INotifyPropertyChanged
     {
-        
-        Game _gameOfLife;
-        private const int CellsWidth = 40, CellsHeight = 20;
+        readonly Game _gameOfLife;
         private double? _speed;
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -27,7 +26,7 @@ namespace GameOfLife
             {
                 _speed = value;
                 if (value != null) _gameOfLife.Speed = value.Value;
-                OnPropertyChanged("Speed");
+                OnPropertyChanged();
             }
         }
 
@@ -35,23 +34,18 @@ namespace GameOfLife
         {
             InitializeComponent();
 
-            _gameOfLife = new Game(50, 30) {CellGrid = MainGrid};
-            DataContext = _gameOfLife;
-        }
+  
 
-        private void StartButton_Click(object sender, RoutedEventArgs e)
-        {
-            int width, height;
-            width = int.TryParse(WidthBox.Text, out width) ? ((width >= 10 && width <= 100) ? width : CellsWidth) : CellsWidth;
-            height = int.TryParse(HeightBox.Text, out height) ? ((height >= 10 && height <= 100) ? height : CellsHeight) : CellsHeight;
+            var w = new SizeWindow();
+            w.ShowDialog();
+            _gameOfLife = new Game(w.GameWidth, w.GameHeight) { CellGrid = MainGrid };
+            DataContext = _gameOfLife;
 
             _gameOfLife.Speed = _speed ?? 300;
-            _gameOfLife.ResizeGrid(width, height);
             _gameOfLife.PopulateGrid();
-             
+
             _gameOfLife.GameStarted = true;
             _gameOfLife.GameNotStarted = false;
-
         }
 
         private void StepButton_Click(object sender, RoutedEventArgs e)
@@ -69,7 +63,7 @@ namespace GameOfLife
             var state = _gameOfLife.SaveState();
 
             string filename;
-            var dlg = new Microsoft.Win32.SaveFileDialog
+            var dlg = new SaveFileDialog
             {
                 DefaultExt = ".cell",
                 Filter = "Game of Life board (*.cell)|*.cell"
@@ -100,7 +94,7 @@ namespace GameOfLife
         private void OpenButton_Click(object sender, RoutedEventArgs e)
         {
             string filename;
-            var dlg = new Microsoft.Win32.OpenFileDialog
+            var dlg = new OpenFileDialog
             {
                 DefaultExt = ".cell",
                 Filter = "Game of Life board (*.cell)|*.cell"

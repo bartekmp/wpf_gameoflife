@@ -1,18 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Shell;
-using System.Windows.Threading;
 using GameOfLife.Annotations;
 
 namespace GameOfLife
@@ -31,7 +22,7 @@ namespace GameOfLife
             set
             {
                 _gameStarted = value;
-                OnPropertyChanged("GameStarted");
+                OnPropertyChanged();
             }
         }
 
@@ -40,12 +31,12 @@ namespace GameOfLife
             get { return !_gameStarted; }
             set
             {
-                OnPropertyChanged("GameNotStarted");
+                OnPropertyChanged();
             }
         }
 
-        private int _gridWidth = 50;
-        private int _gridHeight = 30;
+        private int _gridWidth;
+        private int _gridHeight;
 
         public CellControl[,] Cells;
         public Grid CellGrid;
@@ -59,11 +50,9 @@ namespace GameOfLife
 
             set
             {
-                if (_stepCounter != value)
-                {
-                    _stepCounter = value;
-                    OnPropertyChanged("StepCounter");
-                }
+                if (_stepCounter == value) return;
+                _stepCounter = value;
+                OnPropertyChanged();
             }
         }
 

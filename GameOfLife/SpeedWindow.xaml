@@ -9,9 +9,9 @@
     <Grid>
         <StackPanel VerticalAlignment="Center" Margin="10">
 
-            <Label x:Name="label1" Content="Choose speed" HorizontalAlignment="Left"  VerticalAlignment="Top"/>
+            <Label x:Name="label1" Content="Choose speed (miliseconds between iterations &#xD;&#xA;- lower is faster)" HorizontalAlignment="Left"  VerticalAlignment="Top" Height="58"/>
             <Label x:Name="label" Content="{Binding ElementName=Slider, Path=Value, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top"/>
-            <Slider Maximum="1000" TickPlacement="BottomRight" TickFrequency="100" IsSnapToTickEnabled="True" VerticalAlignment="Top" Name="Slider" />
+            <Slider Maximum="1000" TickPlacement="BottomRight" TickFrequency="50" IsSnapToTickEnabled="True" VerticalAlignment="Top" Name="Slider" />
             <Button Content="Accept" Click="Button_Click"/>
         </StackPanel>
     </Grid>
