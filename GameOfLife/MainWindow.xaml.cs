@@ -23,12 +23,25 @@ namespace GameOfLife
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow
+    public partial class MainWindow : INotifyPropertyChanged
     {
         
         Game _gameOfLife;
         private const int CellsWidth = 40, CellsHeight = 20;
         private double? _speed;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public double? Speed
+        {
+            get { return _speed; }
+            set
+            {
+                _speed = value;
+                if (value != null) _gameOfLife.Speed = value.Value;
+                OnPropertyChanged("Speed");
+            }
+        }
 
         public MainWindow()
         {
@@ -130,10 +143,8 @@ namespace GameOfLife
         private void OpenSpeedDialog(object sender, RoutedEventArgs e)
         {
             var w = new SpeedWindow();
-            if (w.ShowDialog() == true)
-            {
-                _speed = w.SliderValue;
-            }
+            w.ShowDialog();
+            Speed = w.SliderValue;
         
         }
 
@@ -154,6 +165,12 @@ namespace GameOfLife
                 }
                 _gameOfLife.RunSimulation(iterations);
             }
+        }
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 
