@@ -11,8 +11,8 @@
             <Menu x:Name="menu" Height="32" DockPanel.Dock="Top">
                 <MenuItem Header="_File">
                     <MenuItem Header="_Speed"  Click="OpenSpeedDialog"/>
-                    <MenuItem Header="_Run"  Click="RunButton_Click" IsEnabled="{Binding GameStarted}" />
-                    <MenuItem Header="_Step"  Click="StepButton_Click" IsEnabled="{Binding GameStarted}" />
+                    <MenuItem Header="_Run"  Click="RunButton_Click" />
+                    <MenuItem Header="_Step"  Click="StepButton_Click" />
                     <MenuItem Header="_Reset"  Click="ResetButton_Click"/>
                     <MenuItem Header="_Save state" Click="SaveButton_Click" />
                     <MenuItem Header="_Open state" Click="OpenButton_Click" />
