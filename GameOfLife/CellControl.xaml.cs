@@ -53,5 +53,6 @@ namespace GameOfLife
         public void SetAlive() { modelCell.SetAlive(); }
         public void UpdateState() { modelCell.UpdateState(); }
         public void SetCurrentDead() { modelCell.SetCurrentDead(); }
+        public void SetCurrentAlive() { modelCell.SetCurrentAlive(); }
     }
 }

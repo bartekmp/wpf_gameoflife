@@ -85,6 +85,13 @@ namespace GameOfLife
             FillBrush = Used ? Brushes.CornflowerBlue : Brushes.Transparent;
         }
 
+        public void SetCurrentAlive()
+        {
+            IsAlive = true;
+            Used = true;
+            FillBrush = Brushes.Black;
+        }
+
         public void SetState(bool state)
         {
             if (state)
