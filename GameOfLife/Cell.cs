@@ -37,13 +37,13 @@ namespace GameOfLife
         {
             IsAlive = true;
             Used = true;
-            FillBrush = Brushes.Black;
+            FillBrush = Brushes.DarkRed;
         }
 
         public void SetDead()
         {
             IsAlive = false;
-            FillBrush = Used ? Brushes.CornflowerBlue : Brushes.Transparent;
+            FillBrush = Used ? Brushes.YellowGreen: Brushes.Transparent;
         }
 
         public void ChangeState()

@@ -7,14 +7,17 @@
         mc:Ignorable="d"
         Title="Select grid size" Height="99.153" Width="390.255">
     <Grid Margin="0,0,2,1">
-        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+        <DockPanel>
 
-            <Label Content="Width:" Margin="10,10"/>
-            <TextBox x:Name="WidthBox" TextWrapping="Wrap" Text="40" Margin="10,10" Width="54"/>
-            <Label Content="Height:" Margin="10,10"/>
-            <TextBox x:Name="HeightBox" TextWrapping="Wrap" Text="20" Margin="10,10" Width="54"/>
-            <Button x:Name="Start" Content="Start" HorizontalAlignment="Left" Margin="10,10" VerticalAlignment="Top" Width="84" Click="Start_Click" />
-        </StackPanel>
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+
+                <Label Content="Width:" Margin="10,10"/>
+                <TextBox x:Name="WidthBox" TextWrapping="Wrap" Text="40" Margin="10,10" Width="54"/>
+                <Label Content="Height:" Margin="10,10"/>
+                <TextBox x:Name="HeightBox" TextWrapping="Wrap" Text="20" Margin="10,10" Width="54"/>
+                <Button x:Name="Start" Content="Start" HorizontalAlignment="Left" Margin="10,10" VerticalAlignment="Top" Width="84" Click="Start_Click" />
+            </StackPanel>
+        </DockPanel>
 
     </Grid>
 </Window>

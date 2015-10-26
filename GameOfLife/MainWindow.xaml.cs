@@ -44,8 +44,6 @@ namespace GameOfLife
             _gameOfLife.Speed = _speed ?? 300;
             _gameOfLife.PopulateGrid();
 
-            _gameOfLife.GameStarted = true;
-            _gameOfLife.GameNotStarted = false;
         }
 
         private void StepButton_Click(object sender, RoutedEventArgs e)
@@ -65,8 +63,8 @@ namespace GameOfLife
             string filename;
             var dlg = new SaveFileDialog
             {
-                DefaultExt = ".cell",
-                Filter = "Game of Life board (*.cell)|*.cell"
+                DefaultExt = ".gol",
+                Filter = "Game of Life board (*.gol)|*.gol"
             };
             
             var result = dlg.ShowDialog();
@@ -96,8 +94,8 @@ namespace GameOfLife
             string filename;
             var dlg = new OpenFileDialog
             {
-                DefaultExt = ".cell",
-                Filter = "Game of Life board (*.cell)|*.cell"
+                DefaultExt = ".gol",
+                Filter = "Game of Life board (*.gol)|*.gol"
             };
 
             var result = dlg.ShowDialog();

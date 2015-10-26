@@ -1,12 +1,11 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 
 namespace GameOfLife
 {
     /// <summary>
     /// Interaction logic for CellControl.xaml
     /// </summary>
-    public partial class CellControl : UserControl
+    public partial class CellControl
     {
         readonly Cell _modelCell = new Cell();
         public CellControl()

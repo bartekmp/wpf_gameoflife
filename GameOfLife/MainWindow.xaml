@@ -23,8 +23,8 @@
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
                     <Label Content="Steps:" Margin="10,10,2,10" />
                     <TextBox x:Name="CountBox" HorizontalAlignment="Left" Margin="10,10,10,10" TextWrapping="Wrap" Text="" Width="54"/>
-                    <Button x:Name="RunButton" Content="Run" Margin="10,10,10,10" Width="60" Click="RunButton_Click" IsEnabled="{Binding GameStarted}"/>
-                    <Button x:Name="StepButton" Content="Step" Margin="10,10,10,10" Width="60" Click="StepButton_Click" IsEnabled="{Binding GameStarted}" />
+                    <Button x:Name="RunButton" Content="Run" Margin="10,10,10,10" Width="60" Click="RunButton_Click"/>
+                    <Button x:Name="StepButton" Content="Step" Margin="10,10,10,10" Width="60" Click="StepButton_Click" />
                     <Button x:Name="ResetButton" Content="Reset" Width="60" Margin="10,10,10,10" Click="ResetButton_Click"/>
                     <Label Content="Iterations:" Margin="10,10,2,10" />
                     <Label x:Name="IterationsLabel" Margin="2,10,10,10" Content="{Binding StepCounter}"/>

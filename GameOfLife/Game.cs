@@ -13,27 +13,8 @@ namespace GameOfLife
         private int _iterations;
         private int _stepCounter;
 
-        private bool _gameStarted;
 
         public double Speed;
-        public bool GameStarted
-        {
-            get { return _gameStarted; }
-            set
-            {
-                _gameStarted = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool GameNotStarted
-        {
-            get { return !_gameStarted; }
-            set
-            {
-                OnPropertyChanged();
-            }
-        }
 
         private int _gridWidth;
         private int _gridHeight;
@@ -89,7 +70,7 @@ namespace GameOfLife
                     Grid.SetColumn(cell, i);
                     Grid.SetRow(cell, j);
                     CellGrid.Children.Add(cell);
-                    
+
                 }
             }
         }
@@ -113,16 +94,7 @@ namespace GameOfLife
                 {
                     var living = Cells[j, i].IsAlive;
                     var count = GetLivingNeighbors(i, j);
-                    var result = false;
-                    
-                    if (living && count < 2)
-                        result = false;
-                    if (living && (count == 2 || count == 3))
-                        result = true;
-                    if (living && count > 3)
-                        result = false;
-                    if (!living && count == 3)
-                        result = true;
+                    var result = living && (count == 2 || count == 3) || !living && count == 3;
 
                     if (living != result)
                         Cells[j, i].SetState(result);
@@ -134,46 +106,38 @@ namespace GameOfLife
         private int GetLivingNeighbors(int x, int y)
         {
             var count = 0;
-            
-            // cell on the right
-            if (x < _gridWidth - 1)
-                if (Cells[y, x+1].IsAlive)
-                    count++;
-
-            // cell on the bottom right
-            if (x < _gridWidth - 1 && y < _gridHeight - 1)
-                if (Cells[y + 1, x + 1].IsAlive)
-                    count++;
-
-            // cell on the bottom
-            if (y < _gridHeight - 1)
-                if (Cells[y + 1, x].IsAlive)
-                    count++;
-
-            // cell on the bottom left
-            if (x > 0 && y < _gridHeight - 1)
-                if (Cells[y +1, x -1].IsAlive)
-                    count++;
-
-            //  cell on the left
-            if (x > 0)
-                if (Cells[y, x-1].IsAlive)
-                    count++;
 
             // cell on the top left
-            if (x > 0 && y > 0)
-                if (Cells[y - 1, x - 1].IsAlive)
-                    count++;
+            if (x > 0 && y > 0 && Cells[y - 1, x - 1].IsAlive)
+                count++;
 
             // cell on the top
-            if (y > 0)
-                if (Cells[y-1, x].IsAlive)
-                    count++;
+            if (y > 0 && Cells[y - 1, x].IsAlive)
+                count++;
 
             // cell on the top right
-            if (x < _gridWidth - 1 && y > 0)
-                if (Cells[y - 1, x + 1].IsAlive)
-                    count++;
+            if (x < _gridWidth - 1 && y > 0 && Cells[y - 1, x + 1].IsAlive)
+                count++;
+
+            //  cell on the left
+            if (x > 0 && Cells[y, x - 1].IsAlive)
+                count++;
+
+            // cell on the right
+            if (x < _gridWidth - 1 && Cells[y, x + 1].IsAlive)
+                count++;
+
+            // cell on the bottom left
+            if (x > 0 && y < _gridHeight - 1 && Cells[y + 1, x - 1].IsAlive)
+                count++;
+
+            // cell on the bottom
+            if (y < _gridHeight - 1 && Cells[y + 1, x].IsAlive)
+                count++;
+
+            // cell on the bottom right
+            if (x < _gridWidth - 1 && y < _gridHeight - 1 && Cells[y + 1, x + 1].IsAlive)
+                count++;
 
             return count;
         }
@@ -232,10 +196,8 @@ namespace GameOfLife
 
         public void RestoreState(string[] state)
         {
-            if (GameStarted)
-            {
-                ResetGame();
-            } 
+
+            ResetGame();
 
             var height = state.Length;
             var length = state[0].Length;
@@ -243,11 +205,6 @@ namespace GameOfLife
             if (_gridHeight != height || _gridWidth != length)
             {
                 ResizeGrid(length, height);
-            }
-
-            if (GameNotStarted)
-            {
-                PopulateGrid();
             }
 
             for (var i = 0; i < height; i++)
@@ -269,8 +226,6 @@ namespace GameOfLife
                     }
                 }
             }
-            GameStarted = true;
-            GameNotStarted = false;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
