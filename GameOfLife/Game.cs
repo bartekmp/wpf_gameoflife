@@ -101,6 +101,17 @@ namespace GameOfLife
                 }
             }
             StepCounter++;
+            UpdateCells();
+        }
+        private void UpdateCells()
+        {
+            for (var j = 0; j < _gridHeight; j++)
+            {
+                for (var i = 0; i < _gridWidth; i++)
+                {
+                    Cells[j, i].UpdateState();
+                }
+            }
         }
 
         private int GetLivingNeighbors(int x, int y)
@@ -160,6 +171,7 @@ namespace GameOfLife
             {
                 for (var i = 0; i < _gridWidth; i++)
                 {
+                    Cells[j, i].SetCurrentDead();
                     Cells[j, i].Used = false;
                     Cells[j, i].SetDead();
                 }
@@ -226,6 +238,7 @@ namespace GameOfLife
                     }
                 }
             }
+            UpdateCells();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

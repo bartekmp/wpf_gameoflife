@@ -17,6 +17,7 @@ namespace GameOfLife
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
             _modelCell.ChangeState();
+            _modelCell.ChangeCurrentState();
         }
 
         public bool IsAlive
@@ -28,13 +29,16 @@ namespace GameOfLife
         {
             get { return _modelCell.Used; }
             set { _modelCell.Used = value; }
-        } 
+        }
 
-        public void ChangeState() { _modelCell.ChangeState();}
+        public void ChangeState() { _modelCell.ChangeState(); }
 
-        public void SetState(bool state) { _modelCell.SetState(state);}
+        public void SetState(bool state) { _modelCell.SetState(state); }
 
         public void SetDead() { _modelCell.SetDead(); }
         public void SetAlive() { _modelCell.SetAlive(); }
+        public void UpdateState() { _modelCell.UpdateState(); }
+        public void SetCurrentDead() { _modelCell.SetCurrentDead(); }
+        public void SetCurrentAlive() { _modelCell.SetCurrentAlive(); }
     }
 }
