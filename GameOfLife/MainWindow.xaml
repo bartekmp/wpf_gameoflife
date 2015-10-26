@@ -7,8 +7,8 @@
         mc:Ignorable="d"
         Title="Game of Life" Height="600" Width="800">
     <Grid>
-        <StackPanel>
-            <Menu x:Name="menu" Height="32">
+        <DockPanel>
+            <Menu x:Name="menu" Height="32" DockPanel.Dock="Top">
                 <MenuItem Header="_File">
                     <MenuItem Header="_Start"  Click="StartButton_Click"/>
                     <MenuItem Header="_Speed"  Click="OpenSpeedDialog"/>
@@ -20,7 +20,7 @@
                     <MenuItem Header="_Close"  Click="CloseWindow"/>
                 </MenuItem>
             </Menu>
-            <DockPanel Margin="0,0,0,0">
+            <DockPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
                     <Label Content="Steps:" Margin="10,10,2,10" />
                     <TextBox x:Name="CountBox" HorizontalAlignment="Left" Margin="10,10,10,10" TextWrapping="Wrap" Text="" Width="54"/>
@@ -35,8 +35,8 @@
                     <Label Content="Height:" Margin="2,10,2,10"/>
                     <TextBox x:Name="HeightBox" Height="22" TextWrapping="Wrap" Text="20" Width="32" Margin="2,10,2,10"/>
                 </StackPanel>
-                <Grid DockPanel.Dock="Bottom" x:Name="MainGrid" Margin="10,10,10,10" MinHeight="472" />
+                <Grid DockPanel.Dock="Bottom" x:Name="MainGrid" Margin="10,10,10,10" />
         </DockPanel>
-        </StackPanel>
+        </DockPanel>
     </Grid>
 </Window>
