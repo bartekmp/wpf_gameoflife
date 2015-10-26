@@ -16,10 +16,9 @@ namespace GameOfLife
 {
     public class Cell : INotifyPropertyChanged
     {
+        private Cell _newState;
         public bool IsAlive { get; set; }
         public bool Used { get; set; }
-        public int X { get; set; }
-        public int Y { get; set; }
         public Brush FillBrush
         {
             get { return _fillBrush; }
@@ -31,28 +30,25 @@ namespace GameOfLife
         }
 
         private Brush _fillBrush;
-        public Cell(int x=0, int y=0)
+        public Cell()
         {
-            X = x;
-            Y = y;
             IsAlive = false;
             Used = false;
             FillBrush = Brushes.Transparent;
-
-
+            _newState = new Cell(true);
         }
 
         public void SetAlive()
         {
-            IsAlive = true;
-            Used = true;
-            FillBrush = Brushes.Black;
+            _newState.IsAlive = true;
+            _newState.Used = true;
+            _newState.FillBrush = Brushes.Black;
         }
 
         public void SetDead()
         {
-            IsAlive = false;
-            FillBrush = Used ? Brushes.CornflowerBlue : Brushes.Transparent;
+            _newState.IsAlive = false;
+            _newState.FillBrush = Used ? Brushes.CornflowerBlue : Brushes.Transparent;
         }
 
         public void ChangeState()
@@ -67,6 +63,28 @@ namespace GameOfLife
             }
         }
 
+        public void ChangeCurrentState()
+        {
+            if (IsAlive)
+            {
+                IsAlive = false;
+                FillBrush = Used ? Brushes.CornflowerBlue : Brushes.Transparent;
+            }
+            else
+            {
+                IsAlive = true;
+                Used = true;
+                FillBrush = Brushes.Black;
+            }
+        }
+
+        public void SetCurrentDead()
+        {
+            IsAlive = false;
+            Used = false;
+            FillBrush = Used ? Brushes.CornflowerBlue : Brushes.Transparent;
+        }
+
         public void SetState(bool state)
         {
             if (state)
@@ -79,6 +97,20 @@ namespace GameOfLife
             } 
         }
 
+        public void UpdateState()
+        {
+            IsAlive = _newState.IsAlive;
+            FillBrush = _newState.FillBrush;
+            Used = _newState.Used;
+        }
+
+        private Cell(bool t)
+        {
+            IsAlive = false;
+            Used = false;
+            FillBrush = Brushes.Transparent;
+            _newState = null;
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

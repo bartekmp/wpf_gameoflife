@@ -30,7 +30,8 @@ namespace GameOfLife
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
             modelCell.ChangeState();
-           // Btn.Background = modelCell.FillBrush;
+            modelCell.ChangeCurrentState();
+            // Btn.Background = modelCell.FillBrush;
         }
 
         public bool IsAlive
@@ -50,5 +51,7 @@ namespace GameOfLife
 
         public void SetDead() { modelCell.SetDead(); }
         public void SetAlive() { modelCell.SetAlive(); }
+        public void UpdateState() { modelCell.UpdateState(); }
+        public void SetCurrentDead() { modelCell.SetCurrentDead(); }
     }
 }
