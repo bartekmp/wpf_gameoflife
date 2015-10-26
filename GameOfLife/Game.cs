@@ -22,7 +22,7 @@ namespace GameOfLife
         private int _iterations;
         private int _stepCounter;
 
-        private bool _gameStarted, _gameNotStarted;
+        private bool _gameStarted;
 
         public double Speed;
         public bool GameStarted
@@ -31,17 +31,15 @@ namespace GameOfLife
             set
             {
                 _gameStarted = value;
-                _gameNotStarted = !_gameStarted;
                 OnPropertyChanged("GameStarted");
             }
         }
 
         public bool GameNotStarted
         {
-            get { return _gameNotStarted; }
+            get { return !_gameStarted; }
             set
             {
-                _gameNotStarted = value;
                 OnPropertyChanged("GameNotStarted");
             }
         }
@@ -73,7 +71,6 @@ namespace GameOfLife
         {
             _gridHeight = height;
             _gridWidth = width;
-            _gameNotStarted = true;
             Cells = new CellControl[_gridHeight, _gridWidth];
         }
 
@@ -98,8 +95,7 @@ namespace GameOfLife
             {
                 for (var i = 0; i < _gridWidth; i++)
                 {
-                    CellControl cell;
-                    cell = new CellControl();
+                    var cell = new CellControl();
                     Cells[j, i] = cell;
                     Grid.SetColumn(cell, i);
                     Grid.SetRow(cell, j);
@@ -269,18 +265,18 @@ namespace GameOfLife
             {
                 for (var j = 0; j < length; j++)
                 {
-                    if (state[i][j] == 'A')
+                    switch (state[i][j])
                     {
-                        Cells[i, j].SetAlive();
-                    }
-                    else if (state[i][j] == 'U')
-                    {
-                        Cells[i, j].Used = true;
-                        Cells[i, j].SetDead();
-                    }
-                    else
-                    {
-                        Cells[i, j].SetDead();
+                        case 'A':
+                            Cells[i, j].SetAlive();
+                            break;
+                        case 'U':
+                            Cells[i, j].Used = true;
+                            Cells[i, j].SetDead();
+                            break;
+                        default:
+                            Cells[i, j].SetDead();
+                            break;
                     }
                 }
             }
